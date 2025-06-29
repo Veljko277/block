@@ -3,6 +3,6 @@
 #ifndef GAME_MODE_H
 #define GAME_MODE_H
 
-#define GAME_NAME "DDraceNetwork"
-#define TEST_NAME "DDraceNetwork"
+#define GAME_NAME "Block   BW"
+#define TEST_NAME "TBlock   BW"
 #endif

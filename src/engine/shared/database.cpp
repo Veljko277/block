@@ -17,9 +17,10 @@ static LOCK s_QueryLock = lock_create();
 
 static void ExecuteQuery(void *pData)
 {
-	CDatabase::CThreadFeed *pFeed = (CDatabase::CThreadFeed *)pData;
 
 #if defined(CONF_SQL)
+    CDatabase::CThreadFeed *pFeed = (CDatabase::CThreadFeed *)pData;
+
 	sql::Driver *pDriver = NULL;
 	sql::Connection *pConnection = NULL;
 	sql::Statement *pStatement = NULL;

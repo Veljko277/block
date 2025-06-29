@@ -1,7 +1,3 @@
-TODO:
-CLEANUP
-CORRECT BROWSER EXP
-
 # Veqi's Blocker
 This is blocker by veqi
 

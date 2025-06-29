@@ -18,10 +18,6 @@
 #include <game/server/entities/special/lovely.h>
 #include <game/collision.h>
 #include <game/gamecore.h>
-/*#include "gamemodes/dm.h"
-#include "gamemodes/tdm.h"
-#include "gamemodes/ctf.h"
-#include "gamemodes/mod.h"*/
 
 #include <vector>
 #include <fstream>
@@ -673,7 +669,7 @@ void CGameContext::DoBotPenality()
 		CPlayer *pPlayer = m_apPlayers[i];
 		if (pPlayer == NULL) continue;
 
-		
+
 		CBotProtections *pProtection = pPlayer->BotProtections();
 		if (pProtection->GetHACountRatio() >= 0.69 && pProtection->GetHACountTotal() >= 120)
 		{
@@ -706,7 +702,7 @@ void CGameContext::HandleFlagHunt()
 		str_format(aBuf, sizeof(aBuf), "Flag-Hunt warmup: %.1f", Time);
 		SendBroadcast(aBuf, m_FlagHuntCarrier);
 		s_StartFlagHunt = true;
-		
+
 		return;
 	}
 
@@ -2280,7 +2276,7 @@ int CGameContext::UploadFileCallback(const char *name, int is_dir, int dir_type,
 
 	FILE *pAccfile = fopen(aFullPath, "r");
 
-	// Always change the numbers when adding please. Makes it easy 
+	// Always change the numbers when adding please. Makes it easy
 	fscanf(pAccfile, "%s\n%s\n%s\n%d\n%d\n%d\n%d\n%d\n%s\n%d\n%d",
 		aUsername, aPassword, aRconPassword, &UserID, &Vip, &Pages,
 		&Level, &Exp, aIp, &Weaponkits, &Slot);
@@ -2678,7 +2674,7 @@ void CGameContext::ConStartFlagHunt(IConsole::IResult *pResult, void *pUserData)
 {
 	CGameContext *pSelf = (CGameContext *)pUserData;
 	int ClientID = pResult->GetInteger(0);
-	
+
 	if(ClientID == -2)
 	{
 		std::vector<int> SaveClients;
@@ -3386,7 +3382,7 @@ int CGameContext::ProcessSpamProtection(int ClientID)
 	{
 		char aBuf[128];
 		str_format(aBuf, sizeof aBuf, "You are not permitted to talk for the next %d seconds.", Muted);
-		
+
 		if(!m_apPlayers[ClientID]->m_SilentMuted)
 		{
 			SendChatTarget(ClientID, aBuf);
@@ -3659,7 +3655,7 @@ void CGameContext::DestroyLolText(int TextID)
 	CLoltext::Destroy(&m_World, TextID);
 }
 
-void CGameContext::RemoveLine(char* sourcefile, int line) 
+void CGameContext::RemoveLine(char* sourcefile, int line)
 {
 	std::ifstream infile;
 	infile.open(sourcefile, std::ios::in);
@@ -3668,10 +3664,10 @@ void CGameContext::RemoveLine(char* sourcefile, int line)
 
 	str_format(tempPath, sizeof(tempPath), "%s/tempfile.txt", g_Config.m_SvSecurityPath);
 
-	if (infile) 
+	if (infile)
 	{
 		int numLine = CountLine(sourcefile);
-		if (numLine < line) 
+		if (numLine < line)
 		{
 			dbg_msg("LINE", "No line to delete");
 			return;
@@ -3683,10 +3679,10 @@ void CGameContext::RemoveLine(char* sourcefile, int line)
 		char data[100];
 		int i = 0;
 
-		while (infile.getline(data, 100)) 
+		while (infile.getline(data, 100))
 		{
 			i++;
-			if (i == line) 
+			if (i == line)
 			{
 				continue;
 			}
@@ -3713,7 +3709,7 @@ void CGameContext::RemoveLine(char* sourcefile, int line)
 	rename(tempPath, sourcefile);
 }
 
-int CGameContext::CountLine(char* sourcefile) 
+int CGameContext::CountLine(char* sourcefile)
 {
 	std::ifstream infile;
 	infile.open(sourcefile, std::ios::in);
@@ -3721,7 +3717,7 @@ int CGameContext::CountLine(char* sourcefile)
 	char data[100];
 	int line = 0;
 
-	while (infile.getline(data, 100)) 
+	while (infile.getline(data, 100))
 	{
 		line++;
 	}
@@ -3777,7 +3773,7 @@ void CGameContext::ProcessAutoBan(int ClientID)
 			{
 				Server()->GetClientAddr(ClientID, aBanAddr, sizeof(aBanAddr));
 				Server()->Kick(ClientID, "");
-				
+
 				// [Silent Mode]: Ban him after he is seliently kicked
 				char aCmd[100];
 				str_format(aCmd, sizeof(aCmd), "ban %s 5 %s", aBanAddr, g_Config.m_SvAutobanMessage);
@@ -3803,7 +3799,7 @@ void CGameContext::ProcessClientBan(int ClientID)
 			{
 				Server()->GetClientAddr(ClientID, aBanAddr, sizeof(aBanAddr));
 				Server()->Kick(ClientID, "");
-				
+
 				// [Silent Mode]: Ban him after he is seliently kicked
 				char aCmd[100];
 				str_format(aCmd, sizeof(aCmd), "ban %s 5 %s", aBanAddr, g_Config.m_SvClientbanMessage);

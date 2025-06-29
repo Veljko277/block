@@ -12,7 +12,7 @@ if target_arch then
 end
 
 Import("configure.lua")
-Import("other/mysql/mysql.lua")
+Import("scripts/mysql/mysql.lua")
 
 --- Setup Config -------
 config = NewConfig()
@@ -88,12 +88,12 @@ function ContentCompile(action, output)
 	AddJob(
 		output,
 		action .. " > " .. output,
-		Script("datasrc/compile.py") .. " " .. action .. " > " .. Path(output)
+		Script("scripts/datasrc/compile.py") .. " " .. action .. " > " .. Path(output)
 	)
-	AddDependency(output, Path("datasrc/content.py")) -- do this more proper
-	AddDependency(output, Path("datasrc/network.py"))
-	AddDependency(output, Path("datasrc/compile.py"))
-	AddDependency(output, Path("datasrc/datatypes.py"))
+	AddDependency(output, Path("scripts/datasrc/content.py")) -- do this more proper
+	AddDependency(output, Path("scripts/datasrc/network.py"))
+	AddDependency(output, Path("scripts/datasrc/compile.py"))
+	AddDependency(output, Path("scripts/datasrc/datatypes.py"))
 	return output
 end
 

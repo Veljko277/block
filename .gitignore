@@ -6,8 +6,6 @@ datasrc/*.pyc
 objs
 src/game/generated
 
-/DDNet*
-/Google-Mod*
 /confusables*
 /crapnet*
 /config_store*
@@ -26,8 +24,8 @@ src/game/generated
 /versionsrv*
 other/boost*
 other/msinttypes*
-other/mysql/include/boost
-other/mysql/include/msinttypes
+scripts/mysql/include/boost
+scripts/mysql/include/msinttypes
 
 Debug/
 *.bat
@@ -55,7 +53,6 @@ buildlog.txt
 *.opensdf
 *.pyc
 *.dll
-*.map
 *.VC.opendb
 *.VC*db
 *.acc

@@ -4,7 +4,7 @@
 // TODO: most of this includes can probably be removed
 #include <string.h>
 #include <fstream>
-#include <engine/config.h> 
+#include <engine/config.h>
 #if defined(CONF_FAMILY_WINDOWS)
 #include <tchar.h>
 #include <direct.h>
@@ -64,7 +64,7 @@ void CAccountDatabase::InitTables()
 	str_format(aBuf, sizeof(aBuf), "CREATE DATABASE IF NOT EXISTS %s", g_Config.m_SvAccSqlDatabase);
 	CreateNewQuery(g_Config.m_SvAccSqlIp, g_Config.m_SvAccSqlName, g_Config.m_SvAccSqlPassword, g_Config.m_SvAccSqlDatabase, aBuf, NULL, NULL, false, true, THREADING);
 
-	CreateNewQuery(g_Config.m_SvAccSqlIp, g_Config.m_SvAccSqlName, g_Config.m_SvAccSqlPassword, g_Config.m_SvAccSqlDatabase, 
+	CreateNewQuery(g_Config.m_SvAccSqlIp, g_Config.m_SvAccSqlName, g_Config.m_SvAccSqlPassword, g_Config.m_SvAccSqlDatabase,
 		"CREATE TABLE IF NOT EXISTS accounts (username VARCHAR(32) BINARY NOT NULL, password VARCHAR(32) BINARY NOT NULL, vip INT DEFAULT 0, pages INT DEFAULT 0, level INT DEFAULT 1, exp INT DEFAULT 0, ip VARCHAR(47), weaponkits INT DEFAULT 0, slot INT DEFAULT 0,  PRIMARY KEY (username)) CHARACTER SET utf8 ;", NULL, NULL, false, true, THREADING);
 #endif
 }
@@ -214,7 +214,7 @@ void CAccountDatabase::Login(const char *pUsername, const char *pPassword)
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), aBuf);
 		return;
 	}
-	
+
 	DatabaseStringCopy(aUsername, pUsername, sizeof(aUsername));
 	DatabaseStringCopy(aPassword, pPassword, sizeof(aPassword));
 
@@ -323,7 +323,7 @@ void CAccountDatabase::Register(const char *pUsername, const char *pPassword)
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), aBuf);
 		return;
 	}
-	
+
 	DatabaseStringCopy(aUsername, pUsername, sizeof(aUsername));
 	DatabaseStringCopy(aPassword, pPassword, sizeof(aPassword));
 
