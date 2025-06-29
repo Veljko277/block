@@ -7,7 +7,7 @@
 #include <game/server/gamemodes/DDRace.h>
 #include <game/version.h>
 #include <game/generated/nethash.cpp>
-#include <game/client/components/console.h>
+// #include <game/client/components/console.h>
 
 #if defined(CONF_SQL)
 #include <game/server/score/sql_score.h>
@@ -137,7 +137,7 @@ void CGameContext::ConEndless(IConsole::IResult *pResult, void *pUserData) // gi
 
 	if (!pSelf->GetPlayerChar(Victim))
 		return;
-	
+
 	pSelf->GetPlayerChar(Victim)->m_EndlessHook ^= 1;
 	char aBuf[512];
 	str_format(aBuf, sizeof(aBuf), pSelf->GetPlayerChar(Victim)->m_EndlessHook ? "%s gave you endless!" : "%s removed your endless!", pSelf->Server()->ClientName(pResult->m_ClientID));
@@ -226,7 +226,7 @@ void CGameContext::ConBloody(IConsole::IResult *pResult, void *pUserData) // giv
 		return;
 
 	pSelf->GetPlayerChar(Victim)->m_Bloody ^= 1;
-	
+
 	char aBuf[512];
 	str_format(aBuf, sizeof(aBuf), pSelf->GetPlayerChar(Victim)->m_Bloody ? "%s gave you bloody!" : "%s removed your bloody!", pSelf->Server()->ClientName(pResult->m_ClientID));
 	pSelf->SendChatTarget(Victim, aBuf);
@@ -243,7 +243,7 @@ void CGameContext::ConSteamy(IConsole::IResult *pResult, void *pUserData) // giv
 		return;
 
 	pSelf->GetPlayerChar(Victim)->m_Steamy ^= 1;
-	
+
 	char aBuf[512];
 	str_format(aBuf, sizeof(aBuf), pSelf->GetPlayerChar(Victim)->m_Steamy ? "%s gave you steamy!" : "%s removed your steamy!", pSelf->Server()->ClientName(pResult->m_ClientID));
 	pSelf->SendChatTarget(Victim, aBuf);
@@ -418,7 +418,7 @@ void CGameContext::ConInvisible(IConsole::IResult *pResult, void *pUserData) // 
 		char FakeMsg[256];
 		str_format(FakeMsg, sizeof(FakeMsg), pSelf->m_apPlayers[Victim]->m_Invisible ? "'%s' has left the game" : "'%s' entered and joined the game", pSelf->Server()->ClientName(Victim));
 		pSelf->SendChat(-1, CGameContext::CHAT_ALL, FakeMsg);
-	
+
 		if(!pSelf->m_apPlayers[Victim]->m_Invisible)
 		{
 			pSelf->GetPlayerChar(Victim)->HandleCollision(true);
@@ -485,7 +485,7 @@ void CGameContext::ConNinja(IConsole::IResult *pResult, void *pUserData)
 void CGameContext::ConSuper(IConsole::IResult *pResult, void *pUserData)
 {
 	CGameContext *pSelf = (CGameContext *)pUserData;
-	
+
 	CCharacter* pChr = pSelf->GetPlayerChar(pResult->GetVictim());
 	if (pChr && !pChr->m_Super)
 	{
@@ -500,7 +500,7 @@ void CGameContext::ConSuper(IConsole::IResult *pResult, void *pUserData)
 void CGameContext::ConUnSuper(IConsole::IResult *pResult, void *pUserData)
 {
 	CGameContext *pSelf = (CGameContext *)pUserData;
-	
+
 	CCharacter* pChr = pSelf->GetPlayerChar(pResult->GetVictim());
 	if (pChr && pChr->m_Super)
 	{
@@ -1028,7 +1028,7 @@ void CGameContext::ConClan(IConsole::IResult *pResult, void *pUserData)
 	str_copy(oldClan, pSelf->Server()->ClientClan(Victim), MAX_CLAN_LENGTH);
 
 	pSelf->Server()->SetClientClan(Victim, newClan);
-	
+
 	char aBuf[256];
 	str_format(aBuf, sizeof(aBuf), "%s has changed '%s' clan to '%s'", pSelf->Server()->ClientName(pResult->m_ClientID), oldClan, pSelf->Server()->ClientClan(Victim));
 	pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "info", aBuf);

@@ -58,14 +58,12 @@ buildlog.txt
 *.map
 *.VC.opendb
 *.VC*db
-
 *.acc
-autoexec_server.cfg
+
+compile_out.txt
 detected_players.txt
 IpLogs.txt
 SlishteePagesLogs.txt
 SlishteeBotMitigationLogs.logs
 Kicklist.txt
 Banlist.txt
-autoexec_server.cfg
-autoexec_server.cfg

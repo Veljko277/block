@@ -26,7 +26,7 @@
 #include <engine/shared/snapshot.h>
 #include <engine/shared/fifo.h>
 
-#include <mastersrv/mastersrv.h>
+#include "mastersrv.h"
 
 // DDRace
 #include <string.h>
@@ -1968,7 +1968,7 @@ void CServer::ConStatus(IConsole::IResult *pResult, void *pUser)
 			if (pThis->m_aClients[i].m_State == CClient::STATE_INGAME)
 			{
 				const char *pAuthStr = pThis->IsAdmin(i) ? "[Admin]" : pThis->IsMod(i) ? "[Mod]" : pThis->IsAuthed(i) ? "[Helper]" : "";
-				str_format(aBuf, sizeof(aBuf), "[%02i] %s:   addr= %s,   score= %d,   client= %d,   secure= %s   %s", i, pThis->ClientName(i), aAddrStr, 
+				str_format(aBuf, sizeof(aBuf), "[%02i] %s:   addr= %s,   score= %d,   client= %d,   secure= %s   %s", i, pThis->ClientName(i), aAddrStr,
 					       pThis->m_aClients[i].m_Score, ((CGameContext *)(pThis->GameServer()))->m_apPlayers[i]->m_ClientVersion, pThis->m_NetServer.HasSecurityToken(i) ? "yes" : "no", pAuthStr);
 			}
 			else
@@ -2023,7 +2023,7 @@ void CServer::ConDnsblStatus(IConsole::IResult *pResult, void *pUser)
 			if (pThis->m_aClients[i].m_State == CClient::STATE_INGAME)
 			{
 				const char *pAuthStr = pThis->IsAdmin(i) ? "[Admin]" : pThis->IsMod(i) ? "[Mod]" : pThis->IsAuthed(i) ? "[Helper]" : "";
-				str_format(aBuf, sizeof(aBuf), "[%02i] %s:   addr= %s,   score= %d,   client= %d,   secure= %s   %s", i, pThis->ClientName(i),aAddrStr, 
+				str_format(aBuf, sizeof(aBuf), "[%02i] %s:   addr= %s,   score= %d,   client= %d,   secure= %s   %s", i, pThis->ClientName(i),aAddrStr,
 					       pThis->m_aClients[i].m_Score, ((CGameContext *)(pThis->GameServer()))->m_apPlayers[i]->m_ClientVersion, pThis->m_NetServer.HasSecurityToken(i) ? "yes" : "no", pAuthStr);
 			}
 			else
@@ -2590,4 +2590,4 @@ void CServer::FixAccounts()
 		system(aCmd);
 		Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "fix_accounts", "Done.");
 	#endif
-} 
+}

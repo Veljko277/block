@@ -5,8 +5,8 @@
 
 #include <engine/storage.h>
 
-#include <versionsrv/versionsrv.h>
-#include <versionsrv/mapversions.h>
+// #include <versionsrv/versionsrv.h>
+// #include <versionsrv/mapversions.h>
 
 #include "datafile.h"
 #include "memheap.h"
@@ -27,25 +27,25 @@ void CMapChecker::Init()
 
 void CMapChecker::SetDefaults()
 {
-	AddMaplist(s_aMapVersionList, s_NumMapVersionItems);
-	m_RemoveDefaultList = true;
+	// AddMaplist(s_aMapVersionList, s_NumMapVersionItems);
+	// m_RemoveDefaultList = true;
 }
 
 void CMapChecker::AddMaplist(CMapVersion *pMaplist, int Num)
 {
-	if(m_RemoveDefaultList)
-		Init();
+	// if(m_RemoveDefaultList)
+	// 	Init();
 
-	for(int i = 0; i < Num; ++i)
-	{
-		CWhitelistEntry *pEntry = (CWhitelistEntry *)m_Whitelist.Allocate(sizeof(CWhitelistEntry));
-		pEntry->m_pNext = m_pFirst;
-		m_pFirst = pEntry;
+	// for(int i = 0; i < Num; ++i)
+	// {
+	// 	CWhitelistEntry *pEntry = (CWhitelistEntry *)m_Whitelist.Allocate(sizeof(CWhitelistEntry));
+	// 	pEntry->m_pNext = m_pFirst;
+	// 	m_pFirst = pEntry;
 
-		str_copy(pEntry->m_aMapName, pMaplist[i].m_aName, sizeof(pEntry->m_aMapName));
-		pEntry->m_MapCrc = (pMaplist[i].m_aCrc[0]<<24) | (pMaplist[i].m_aCrc[1]<<16) | (pMaplist[i].m_aCrc[2]<<8) | pMaplist[i].m_aCrc[3];
-		pEntry->m_MapSize = (pMaplist[i].m_aSize[0]<<24) | (pMaplist[i].m_aSize[1]<<16) | (pMaplist[i].m_aSize[2]<<8) | pMaplist[i].m_aSize[3];
-	}
+	// 	str_copy(pEntry->m_aMapName, pMaplist[i].m_aName, sizeof(pEntry->m_aMapName));
+	// 	pEntry->m_MapCrc = (pMaplist[i].m_aCrc[0]<<24) | (pMaplist[i].m_aCrc[1]<<16) | (pMaplist[i].m_aCrc[2]<<8) | pMaplist[i].m_aCrc[3];
+	// 	pEntry->m_MapSize = (pMaplist[i].m_aSize[0]<<24) | (pMaplist[i].m_aSize[1]<<16) | (pMaplist[i].m_aSize[2]<<8) | pMaplist[i].m_aSize[3];
+	// }
 }
 
 bool CMapChecker::IsMapValid(const char *pMapName, unsigned MapCrc, unsigned MapSize)
