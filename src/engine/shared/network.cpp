@@ -90,6 +90,7 @@ int CNetRecvUnpacker::FetchChunk(CNetChunk *pChunk)
 	}
 }
 
+static const unsigned char NET_HEADER_EXTENDED[] = {'x', 'e'};
 // packs the data tight and sends it
 void CNetBase::SendPacketConnless(NETSOCKET Socket, NETADDR *pAddr, const void *pData, int DataSize)
 {
@@ -196,17 +197,24 @@ int CNetBase::UnpackPacket(unsigned char *pBuffer, int Size, CNetPacketConstruct
 
 	if(pPacket->m_Flags&NET_PACKETFLAG_CONNLESS)
 	{
-		if(Size < 6)
+		const int DATA_OFFSET = 6;
+		if(Size < DATA_OFFSET)
 		{
-			//dbg_msg("", "connection less packet too small, %d", Size);
+			dbg_msg("", "connection less packet too small, %d", Size);
 			return -1;
 		}
 
 		pPacket->m_Flags = NET_PACKETFLAG_CONNLESS;
 		pPacket->m_Ack = 0;
 		pPacket->m_NumChunks = 0;
-		pPacket->m_DataSize = Size - 6;
-		mem_copy(pPacket->m_aChunkData, &pBuffer[6], pPacket->m_DataSize);
+		pPacket->m_DataSize = Size - DATA_OFFSET;
+		mem_copy(pPacket->m_aChunkData, pBuffer + DATA_OFFSET, pPacket->m_DataSize);
+
+		if(mem_comp(pBuffer, NET_HEADER_EXTENDED, sizeof(NET_HEADER_EXTENDED)) == 0)
+		{
+			pPacket->m_Flags |= NET_PACKETFLAG_EXTENDED;
+			mem_copy(pPacket->m_aExtraData, pBuffer + sizeof(NET_HEADER_EXTENDED), sizeof(pPacket->m_aExtraData));
+		}
 	}
 	else
 	{

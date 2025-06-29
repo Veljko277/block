@@ -282,8 +282,8 @@ public:
 
 	void ProcessClientPacket(CNetChunk *pPacket);
 
-	void SendServerInfoConnless(const NETADDR *pAddr, int Token, bool Extended);
-	void SendServerInfo(const NETADDR *pAddr, int Token, bool Extended = false, int Offset = 0, bool Short = false);
+	void SendServerInfoConnless(const NETADDR *pAddr, int Token, int Type);
+	void SendServerInfo(const NETADDR *pAddr, int Token, int Type, bool SendClients);
 	void UpdateServerInfo();
 
 	void PumpNetwork();

@@ -35,6 +35,8 @@ enum
 	NETSENDFLAG_CONNLESS=2,
 	NETSENDFLAG_FLUSH=4,
 
+	NETSENDFLAG_EXTENDED=8,
+
 	NETSTATE_OFFLINE=0,
 	NETSTATE_CONNECTING,
 	NETSTATE_ONLINE,
@@ -67,6 +69,7 @@ enum
 	NET_PACKETFLAG_CONNLESS=2,
 	NET_PACKETFLAG_RESEND=4,
 	NET_PACKETFLAG_COMPRESSION=8,
+	NET_PACKETFLAG_EXTENDED=16,
 
 	NET_CHUNKFLAG_VITAL=1,
 	NET_CHUNKFLAG_RESEND=2,
@@ -110,6 +113,8 @@ struct CNetChunk
 	int m_Flags;
 	int m_DataSize;
 	const void *m_pData;
+
+	unsigned char m_aExtraData[4];
 };
 
 class CNetChunkHeader
@@ -143,6 +148,7 @@ public:
 	int m_NumChunks;
 	int m_DataSize;
 	unsigned char m_aChunkData[NET_MAX_PAYLOAD];
+	unsigned char m_aExtraData[4];
 };
 
 

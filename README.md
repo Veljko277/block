@@ -1,3 +1,7 @@
+TODO:
+CLEANUP
+CORRECT BROWSER EXP
+
 # Veqi's Blocker
 This is blocker by veqi
 
@@ -45,10 +49,6 @@ freely, subject to the following restrictions:*
 
 *3. This notice may not be removed or altered from any source distribution.*
 
-------------------------------------------------------------------------
-
 *IMPORTANT NOTE! The source under src/engine/external are stripped
 libraries with their own licenses. Mostly BSD or zlib/libpng license but
 check the individual libraries.*
-
-------------------------------------------------------------------------
