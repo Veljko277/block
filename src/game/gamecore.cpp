@@ -103,6 +103,7 @@ void CCharacterCore::Reset()
 	m_TriggeredEvents = 0;
 	m_Hook = true;
 	m_Collision = true;
+	m_FreezeStart = 0;
 }
 
 void CCharacterCore::Tick(bool UseInput, bool IsClient)

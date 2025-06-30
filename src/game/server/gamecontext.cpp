@@ -3240,6 +3240,24 @@ void CGameContext::OnSnap(int ClientID)
 			m_apPlayers[i]->Snap(ClientID);
 	}
 
+	int *pUuidItem = (int *)Server()->SnapNewItem(0, 32764, 16); // NETOBJTYPE_EX
+	if(pUuidItem)
+    {
+    	pUuidItem[0] = 1993229659;
+    	pUuidItem[1] = -102024632;
+    	pUuidItem[2] = -1378361269;
+    	pUuidItem[3] = -1810037668;
+    }
+
+	int *pUuidItemP = (int *)Server()->SnapNewItem(0, 32765, 16); // NETOBJTYPE_EX 2
+	if(pUuidItemP)
+    {
+    	pUuidItemP[0] = 583701389;
+    	pUuidItemP[1] = 327171627;
+    	pUuidItemP[2] = -1636052395;
+    	pUuidItemP[3] = -1901674991;
+    }
+
 	if (ClientID > -1)
 		m_apPlayers[ClientID]->FakeSnap();
 

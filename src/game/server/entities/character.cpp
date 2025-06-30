@@ -1254,44 +1254,44 @@ void CCharacter::Snap(int SnappingClient)
 	{
 		if (pCharacter->m_Emote == EMOTE_NORMAL)
 			pCharacter->m_Emote = EMOTE_PAIN;
-		pCharacter->m_Weapon = WEAPON_NINJA;
+		// pCharacter->m_Weapon = WEAPON_NINJA;
 	}
 	else if (m_FreezeTime > 0 || m_FreezeTime == -1)
 	{
 		if (pCharacter->m_Emote == EMOTE_NORMAL)
 			pCharacter->m_Emote = EMOTE_BLINK;
-		pCharacter->m_Weapon = WEAPON_NINJA;
+		// pCharacter->m_Weapon = WEAPON_NINJA;
 	}
 
 	// jetpack and ninjajetpack prediction
-	if (m_pPlayer->GetCID() == SnappingClient)
-	{
-		if (m_Jetpack && pCharacter->m_Weapon != WEAPON_NINJA)
-		{
-			if (!(m_NeededFaketuning & FAKETUNE_JETPACK))
-			{
-				m_NeededFaketuning |= FAKETUNE_JETPACK;
-				GameServer()->SendTuningParams(m_pPlayer->GetCID(), m_TuneZone);
-			}
-		}
-		else
-		{
-			if (m_NeededFaketuning & FAKETUNE_JETPACK)
-			{
-				m_NeededFaketuning &= ~FAKETUNE_JETPACK;
-				GameServer()->SendTuningParams(m_pPlayer->GetCID(), m_TuneZone);
-			}
-		}
-	}
+	// if (m_pPlayer->GetCID() == SnappingClient)
+	// {
+	// 	if (m_Jetpack && pCharacter->m_Weapon != WEAPON_NINJA)
+	// 	{
+	// 		if (!(m_NeededFaketuning & FAKETUNE_JETPACK))
+	// 		{
+	// 			m_NeededFaketuning |= FAKETUNE_JETPACK;
+	// 			GameServer()->SendTuningParams(m_pPlayer->GetCID(), m_TuneZone);
+	// 		}
+	// 	}
+	// 	else
+	// 	{
+	// 		if (m_NeededFaketuning & FAKETUNE_JETPACK)
+	// 		{
+	// 			m_NeededFaketuning &= ~FAKETUNE_JETPACK;
+	// 			GameServer()->SendTuningParams(m_pPlayer->GetCID(), m_TuneZone);
+	// 		}
+	// 	}
+	// }
 
 	// change eyes, use ninja graphic and set ammo count if player has ninjajetpack
-	if (m_pPlayer->m_NinjaJetpack && m_Jetpack && m_Core.m_ActiveWeapon == WEAPON_GUN && !m_DeepFreeze && !(m_FreezeTime > 0 || m_FreezeTime == -1))
-	{
-		if (pCharacter->m_Emote == EMOTE_NORMAL)
-			pCharacter->m_Emote = EMOTE_HAPPY;
-		pCharacter->m_Weapon = WEAPON_NINJA;
-		pCharacter->m_AmmoCount = 10;
-	}
+	// if (m_pPlayer->m_NinjaJetpack && m_Jetpack && m_Core.m_ActiveWeapon == WEAPON_GUN && !m_DeepFreeze && !(m_FreezeTime > 0 || m_FreezeTime == -1))
+	// {
+	// 	if (pCharacter->m_Emote == EMOTE_NORMAL)
+	// 		pCharacter->m_Emote = EMOTE_HAPPY;
+	// 	pCharacter->m_Weapon = WEAPON_NINJA;
+	// 	pCharacter->m_AmmoCount = 10;
+	// }
 
 	if (m_pPlayer->GetCID() == SnappingClient || SnappingClient == -1 ||
 		(!g_Config.m_SvStrictSpectateMode && m_pPlayer->GetCID() == GameServer()->m_apPlayers[SnappingClient]->m_SpectatorID))
@@ -1312,39 +1312,120 @@ void CCharacter::Snap(int SnappingClient)
 			pCharacter->m_Emote = EMOTE_BLINK;
 	}
 
-	if (m_pPlayer->m_Halloween)
-	{
-		if (1200 - ((Server()->Tick() - m_LastAction) % (1200)) < 5)
-		{
-			GameServer()->SendEmoticon(m_pPlayer->GetCID(), EMOTICON_GHOST);
-		}
-	}
+	// if (m_pPlayer->m_Halloween)
+	// {
+	// 	if (1200 - ((Server()->Tick() - m_LastAction) % (1200)) < 5)
+	// 	{
+	// 		GameServer()->SendEmoticon(m_pPlayer->GetCID(), EMOTICON_GHOST);
+	// 	}
+	// }
 
 	if(m_TempHasSword == true && m_Core.m_ActiveWeapon == WEAPON_GUN && isFreezed == false)
 		pCharacter->m_Weapon = 6;
 
 	pCharacter->m_PlayerFlags = GetPlayer()->m_PlayerFlags;
 
-	if(g_Config.m_SvShowAim == id)
-	{
-		if(s_ShowAimID == -1)
-			s_ShowAimID = Server()->SnapNewID();
+	pCharacter->m_PlayerFlags = GetPlayer()->m_PlayerFlags;
 
-		CPlayer *pSnappingPlayer = GameServer()->m_apPlayers[SnappingClient];
-		if(pSnappingPlayer != NULL && pSnappingPlayer->m_Authed)
-		{
-			vec2 MousePos = m_Pos + vec2(m_LatestInput.m_TargetX, m_LatestInput.m_TargetY);
-			CNetObj_Laser *pObj = static_cast<CNetObj_Laser *>(Server()->SnapNewItem(NETOBJTYPE_LASER, s_ShowAimID, sizeof(CNetObj_Laser)));
-			if(pObj)
-			{
-				pObj->m_X = (int)MousePos.x;
-				pObj->m_Y = (int)MousePos.y;
-				pObj->m_FromX = (int)MousePos.x;
-				pObj->m_FromY = (int)MousePos.y;
-				pObj->m_StartTick = Server()->Tick() -1;
-			}
-		}
+	CNetObj_DDNetCharacter *pDDNetCharacter = (CNetObj_DDNetCharacter *)Server()->SnapNewItem(32764, m_pPlayer->GetCID(), 40);
+	if(!pDDNetCharacter)
+		return;
+	pDDNetCharacter->m_Flags = 0;
+	if(Teams()->m_Core.GetSolo(id))
+		pDDNetCharacter->m_Flags |= CHARACTERFLAG_SOLO;
+	// if(m_Core.m_Super)
+	// 	pDDNetCharacter->m_Flags |= CHARACTERFLAG_SUPER;
+	// if(m_Core.m_Invincible)
+	// 	pDDNetCharacter->m_Flags |= CHARACTERFLAG_INVINCIBLE;
+	// if(m_Core.m_EndlessHook)
+	// 	pDDNetCharacter->m_Flags |= CHARACTERFLAG_ENDLESS_HOOK;
+	// if(m_Core.m_CollisionDisabled || !GetTuning(m_TuneZone)->m_PlayerCollision)
+	// 	pDDNetCharacter->m_Flags |= CHARACTERFLAG_COLLISION_DISABLED;
+	// if(m_Core.m_HookHitDisabled || !GetTuning(m_TuneZone)->m_PlayerHooking)
+	// 	pDDNetCharacter->m_Flags |= CHARACTERFLAG_HOOK_HIT_DISABLED;
+	// if(m_Core.m_EndlessJump)
+	// 	pDDNetCharacter->m_Flags |= CHARACTERFLAG_ENDLESS_JUMP;
+	// if(m_Core.m_Jetpack)
+	// 	pDDNetCharacter->m_Flags |= CHARACTERFLAG_JETPACK;
+	// if(m_Core.m_HammerHitDisabled)
+	// 	pDDNetCharacter->m_Flags |= CHARACTERFLAG_HAMMER_HIT_DISABLED;
+	// if(m_Core.m_ShotgunHitDisabled)
+	// 	pDDNetCharacter->m_Flags |= CHARACTERFLAG_SHOTGUN_HIT_DISABLED;
+	// if(m_Core.m_GrenadeHitDisabled)
+	// 	pDDNetCharacter->m_Flags |= CHARACTERFLAG_GRENADE_HIT_DISABLED;
+	// if(m_Core.m_LaserHitDisabled)
+	// 	pDDNetCharacter->m_Flags |= CHARACTERFLAG_LASER_HIT_DISABLED;
+	// if(m_Core.m_HasTelegunGun)
+	// 	pDDNetCharacter->m_Flags |= CHARACTERFLAG_TELEGUN_GUN;
+	// if(m_Core.m_HasTelegunGrenade)
+	// 	pDDNetCharacter->m_Flags |= CHARACTERFLAG_TELEGUN_GRENADE;
+	// if(m_Core.m_HasTelegunLaser)
+	// 	pDDNetCharacter->m_Flags |= CHARACTERFLAG_TELEGUN_LASER;
+	if(m_aWeapons[WEAPON_HAMMER].m_Got)
+		pDDNetCharacter->m_Flags |= CHARACTERFLAG_WEAPON_HAMMER;
+	if(m_aWeapons[WEAPON_GUN].m_Got)
+		pDDNetCharacter->m_Flags |= CHARACTERFLAG_WEAPON_GUN;
+	if(m_aWeapons[WEAPON_SHOTGUN].m_Got)
+		pDDNetCharacter->m_Flags |= CHARACTERFLAG_WEAPON_SHOTGUN;
+	if(m_aWeapons[WEAPON_GRENADE].m_Got)
+		pDDNetCharacter->m_Flags |= CHARACTERFLAG_WEAPON_GRENADE;
+	if(m_aWeapons[WEAPON_RIFLE].m_Got)
+		pDDNetCharacter->m_Flags |= CHARACTERFLAG_WEAPON_LASER;
+	if(GetActiveWeapon() == WEAPON_NINJA)
+		pDDNetCharacter->m_Flags |= CHARACTERFLAG_WEAPON_NINJA;
+	// if(m_LiveFrozen)
+	// 	pDDNetCharacter->m_Flags |= CHARACTERFLAG_MOVEMENTS_DISABLED;
+	// TO FIXX
+	pDDNetCharacter->m_FreezeEnd = m_FreezeTime == 0 ? 0 : Server()->Tick() + m_FreezeTime;
+	pDDNetCharacter->m_Jumps = m_Core.m_Jumps;
+	// pDDNetCharacter->m_TeleCheckpoint = m_TeleCheckpoint;
+	// pDDNetCharacter->m_StrongWeakId = m_StrongWeakId;
+
+	// Display Information
+	pDDNetCharacter->m_JumpedTotal = m_Core.m_JumpedTotal;
+	// pDDNetCharacter->m_NinjaActivationTick = m_Core.m_Ninja.m_ActivationTick;
+	pDDNetCharacter->m_FreezeStart = m_Core.m_FreezeStart;
+	// if(m_Core.m_IsInFreeze)
+	// {
+	// 	pDDNetCharacter->m_Flags |= CHARACTERFLAG_IN_FREEZE;
+	// }
+	// if(Teams()->IsPractice(Team()))
+	// {
+	// 	pDDNetCharacter->m_Flags |= CHARACTERFLAG_PRACTICE_MODE;
+	// }
+	if(Teams()->TeamLocked(Team()))
+	{
+		pDDNetCharacter->m_Flags |= CHARACTERFLAG_LOCK_MODE;
 	}
+	// if(Teams()->TeamFlock(Team()))
+	// {
+	// 	pDDNetCharacter->m_Flags |= CHARACTERFLAG_TEAM0_MODE;
+	// }
+	pDDNetCharacter->m_TargetX = m_Core.m_Input.m_TargetX;
+	pDDNetCharacter->m_TargetY = m_Core.m_Input.m_TargetY;
+
+	// -1 is the default value, SnapNewItem zeroes the object, so it would incorrectly become 0
+	// pDDNetCharacter->m_TuneZoneOverride = -1;
+	// if(g_Config.m_SvShowAim == id)
+	// {
+	// 	if(s_ShowAimID == -1)
+	// 		s_ShowAimID = Server()->SnapNewID();
+
+	// 	CPlayer *pSnappingPlayer = GameServer()->m_apPlayers[SnappingClient];
+	// 	if(pSnappingPlayer != NULL && pSnappingPlayer->m_Authed)
+	// 	{
+	// 		vec2 MousePos = m_Pos + vec2(m_LatestInput.m_TargetX, m_LatestInput.m_TargetY);
+	// 		CNetObj_Laser *pObj = static_cast<CNetObj_Laser *>(Server()->SnapNewItem(NETOBJTYPE_LASER, s_ShowAimID, sizeof(CNetObj_Laser)));
+	// 		if(pObj)
+	// 		{
+	// 			pObj->m_X = (int)MousePos.x;
+	// 			pObj->m_Y = (int)MousePos.y;
+	// 			pObj->m_FromX = (int)MousePos.x;
+	// 			pObj->m_FromY = (int)MousePos.y;
+	// 			pObj->m_StartTick = Server()->Tick() -1;
+	// 		}
+	// 	}
+	// }
 
 	if (GameServer()->m_KOHActive)
 	{
@@ -2511,6 +2592,7 @@ bool CCharacter::Freeze(int Seconds)
 
 		m_FreezeTime = Seconds == -1 ? Seconds : Seconds * Server()->TickSpeed();
 		m_FreezeTick = Server()->Tick();
+		m_Core.m_FreezeStart = Server()->Tick();
 		return true;
 	}
 	return false;
@@ -2916,11 +2998,11 @@ void CCharacter::HandleBlocking(bool die)
 			char aAddrStrEnemy[NETADDR_MAXSTRSIZE] = { 0 };
 			Server()->GetClientAddr(m_Core.m_Id, aAddrStrSelf, sizeof(aAddrStrSelf));
 			Server()->GetClientAddr(pECore->m_Core.m_Id, aAddrStrEnemy, sizeof(aAddrStrEnemy));
-			if (str_comp_nocase(aAddrStrSelf, aAddrStrEnemy) == 0) // Cannot block your own dummy
-			{
-				GameServer()->SendChatTarget(pECore->m_Core.m_Id, "[AntiFarm]: You cant block your own dummy!");
-				return;
-			}
+			// if (str_comp_nocase(aAddrStrSelf, aAddrStrEnemy) == 0) // Cannot block your own dummy
+			// {
+			// 	GameServer()->SendChatTarget(pECore->m_Core.m_Id, "[AntiFarm]: You cant block your own dummy!");
+			// 	return;
+			// }
 			if (m_FirstFreezeTick != 0 && Server()->Tick() > m_LastBlockedTick + Server()->TickSpeed() * g_Config.m_SvAntiFarmDuration)
 			{
 				char aPrintExp[256];

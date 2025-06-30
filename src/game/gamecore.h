@@ -242,7 +242,9 @@ public:
 
 	void LimitForce(vec2 *Force);
 	void ApplyForce(vec2 Force);
-		
+
+	int m_FreezeStart;
+
 	//LMB
 	int m_LMBHookCount;
 

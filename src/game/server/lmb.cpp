@@ -84,8 +84,8 @@ void CLMB::Tick()
 
 		if (m_pGameServer->Server()->Tick() % SERVER_TICK_SPEED == 0)
 		{
-			char aBuf[256];
-			str_format(aBuf, sizeof(aBuf), "Player: [%d/%d] Use /lmb to participate.", ParticipantNum(), g_Config.m_SvLMBMaxPlayer, g_Config.m_SvLMBMinPlayer);
+			char aBuf[512];
+			str_format(aBuf, sizeof(aBuf), "                                                     \nTournament is starting\n%d/%d required participants\n/sub to praticipate", ParticipantNum(), g_Config.m_SvLMBMinPlayer);
 			m_pGameServer->SendBroadcast(aBuf, -1);
 		}
 	}

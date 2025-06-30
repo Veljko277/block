@@ -8,18 +8,18 @@ This is blocker by veqi
 Building
 --------
 
-DDNet requires additional libraries, that are bundled for the most common platforms (Windows, Mac, Linux, all x86 and x86_64). Instead you can install these libraries on your system, remove the `config.lua` and `bam` should use the system-wide libraries by default. You can install all required dependencies and bam on Debian and Ubuntu like this:
+Server requires additional libraries. You can install these libraries on your system, remove the `config.lua` *if it exists* and then `bam` should use the system-wide libraries by default. You can install all required dependencies and bam on Debian and Ubuntu like this:
 
-    apt-get install libsdl2-dev libfreetype6-dev libcurl4-openssl-dev libogg-dev libopus-dev libopusfile-dev bam
+    apt-get install libcurl4-openssl-dev bam
 
-If you have the libraries installed, but still want to use the bundled ones instead, you can specify so by running `bam config curl.use_pkgconfig=false opus.use_pkgconfig=false opusfile.use_pkgconfig=false ogg.use_pkgconfig=false`.
+The MySQL server is not included in the binary releases and can be built with `bam server_sql_release`. It requires these libraries which you can install on Debian and Ubuntu like this:
 
-The MySQL server is not included in the binary releases and can be built with `bam server_sql_release`. It requires `libmariadbclient-dev`, `libmysqlcppconn-dev` and `libboost-dev`, which are also bundled for the common platforms.
+    apt-get install libmariadbclient-dev libmysqlcppconn-dev libboost-dev
 
 Note that the bundled MySQL libraries might not work properly on your system. If you run into connection problems with the MySQL server, for example that it connects as root while you chose another user, make sure to install your system libraries for the MySQL client and C++ connector. Make sure that `mysql.use_mysqlconfig` is set to `true` in your config.lua.
 
 License
-------------------------------------------------------------------------
+-------------
 
 *Teeworlds Copyright (C) 2007-2014 Magnus Auvinen*
 

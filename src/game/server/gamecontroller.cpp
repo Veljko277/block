@@ -781,6 +781,28 @@ void IGameController::Snap(int SnappingClient)
 			pGameInfoObj->m_RoundStartTick = (pChr->m_DDRaceState == DDRACE_STARTED) ? pChr->m_StartTime : m_RoundStartTick;
 		}
 	}
+	CNetObj_GameInfoEx *pGameInfoEx = (CNetObj_GameInfoEx *)Server()->SnapNewItem(32767, 0, 12);
+	if(!pGameInfoEx)
+		return;
+
+	pGameInfoEx->m_Flags =
+		GAMEINFOFLAG_ALLOW_HOOK_COLL |
+		GAMEINFOFLAG_UNLIMITED_AMMO |
+		// GAMEINFOFLAG_PREDICT_DDRACE |
+		GAMEINFOFLAG_ALLOW_ZOOM;
+	pGameInfoEx->m_Flags2 =	GAMEINFOFLAG2_HUD_DDRACE;
+	 //    GAMEINFOFLAG2_HUD_AMMO |
+		// GAMEINFOFLAG2_HUD_HEALTH_ARMOR |
+	pGameInfoEx->m_Version = 8;
+
+	// This object needs to be snapped alongside pGameInfoObj for that object to work properly
+	int *pUuidItem = (int *)Server()->SnapNewItem(0, 32767, 16); // NETOBJTYPE_EX
+	if(pUuidItem)	{
+		pUuidItem[0] = -1824658838;
+		pUuidItem[1] = -629591830;
+		pUuidItem[2] = -1450210576;
+		pUuidItem[3] = 914991429;
+	}
 
 	/*CNetObj_GameData *pGameDataObj = (CNetObj_GameData *)Server()->SnapNewItem(NETOBJTYPE_GAMEDATA, 0, sizeof(CNetObj_GameData));
 	if (!pGameDataObj)

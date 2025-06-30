@@ -160,7 +160,7 @@ void CPlayer::Reset()
 	GameServer()->Score()->PlayerData(m_ClientID)->Reset();
 
 	m_ClientVersion = VERSION_VANILLA;
-	m_ShowOthers = g_Config.m_SvShowOthersDefault;
+	m_ShowOthers = true;//g_Config.m_SvShowOthersDefault;
 	m_ShowAll = g_Config.m_SvShowAllDefault;
 	m_SpecTeam = 0;
 	m_NinjaJetpack = false;
@@ -201,7 +201,7 @@ void CPlayer::Tick()
 	if (!g_Config.m_DbgDummies || m_ClientID < MAX_CLIENTS - g_Config.m_DbgDummies)
 #endif
 		if (!Server()->ClientIngame(m_ClientID))
-			return;	
+			return;
 
 	if (m_KillMe != 0)
 	{
@@ -339,7 +339,7 @@ void CPlayer::Snap(int SnappingClient)
 #ifdef CONF_DEBUG
 	if (!g_Config.m_DbgDummies || m_ClientID < MAX_CLIENTS - g_Config.m_DbgDummies)
 #endif
-		
+
 	if (!Server()->ClientIngame(m_ClientID))
 		return;
 
@@ -408,7 +408,7 @@ void CPlayer::Snap(int SnappingClient)
 	pPlayerInfo->m_Local = 0;
 	pPlayerInfo->m_ClientID = id;
 	pPlayerInfo->m_Score = abs(m_Score) * -1;
-	pPlayerInfo->m_Team = (m_ClientVersion < VERSION_DDNET_OLD || m_Paused != PAUSED_SPEC || m_ClientID != SnappingClient) && m_Paused < PAUSED_PAUSED ? m_Team : TEAM_SPECTATORS;
+	pPlayerInfo->m_Team = 0;//m_Paused < PAUSED_PAUSED ? m_Team : TEAM_SPECTATORS;
 	if (Anonymus)
 		pPlayerInfo->m_Team = 1;
 
@@ -426,14 +426,32 @@ void CPlayer::Snap(int SnappingClient)
 		pSpectatorInfo->m_Y = m_ViewPos.y;
 	}
 
+	CNetObj_DDNetPlayer *pDDNetPlayer = (CNetObj_DDNetPlayer *)Server()->SnapNewItem(32765, GetCID(), 8);
+	if(!pDDNetPlayer)
+		return;
+
+	// if((SnappingClient >= 0 && Server()->GetAuthedState(SnappingClient)) || !Server()->HasAuthHidden(m_ClientId))
+	// 	pDDNetPlayer->m_AuthLevel = Server()->GetAuthedState(m_ClientID);
+	// else
+	// 	pDDNetPlayer->m_AuthLevel = AUTHED_NO;
+
+	pDDNetPlayer->m_Flags = 0;
+	if(m_Afk)
+		pDDNetPlayer->m_Flags |= EXPLAYERFLAG_AFK;
+	// if(m_Paused == PAUSED_PAUSED)
+	// 	pDDNetPlayer->m_Flags |= EXPLAYERFLAG_SPEC;
+	if(m_Paused != PAUSED_NONE)
+		pDDNetPlayer->m_Flags |= EXPLAYERFLAG_SPEC;
+
+
 	// send 0 if times of others are not shown
 	if (SnappingClient != m_ClientID && g_Config.m_SvHideScore)
-		pPlayerInfo->m_Score = -9999;
+		pPlayerInfo->m_Score = 0;
 	else
 		pPlayerInfo->m_Score = abs(m_Score) * -1;
 
 	if (g_Config.m_SvAnonymousBlock || m_InLMB == LMB_PARTICIPATE)
-		pPlayerInfo->m_Score = -9999;
+		pPlayerInfo->m_Score = -1;
 }
 
 void CPlayer::FakeSnap()
@@ -1091,10 +1109,10 @@ void CPlayer::LMBRestore()
 
 	if(m_SavedStats.m_SavedERainbow)
 		m_Rainbowepiletic = true;
-	
+
 	if(m_SavedStats.m_SavedLovely)
 		m_Lovely = true;
-	
+
 	if(m_SavedStats.m_SavedHeartGuns)
 		m_HeartGuns = true;
 
@@ -1109,7 +1127,7 @@ void CPlayer::LMBRestore()
 		m_IsBallSpawned = true;
 		new CBall(&GameServer()->m_World, GetCharacter()->m_Pos, GetCID());
 	}
-		
+
 	if (m_SavedStats.m_SavedEpicCircle)
 	{
 		m_EpicCircle = true;
